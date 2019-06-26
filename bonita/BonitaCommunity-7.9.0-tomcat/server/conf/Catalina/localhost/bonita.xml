@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+
+    <!--  To not persist the session after reboot tomcat -->
+    <Manager pathname="" />
+
+    <!-- #################################################################################################################### -->
+    <!-- ##############   BETWEEN THESE 2 SECTIONS IS A TEMPLATE MODIFIED BY BONITA SETUP TOOL.              ################ -->
+    <!-- #######   BELOW VALUES SURROUNDED BY '@@' MUST NOT BE TOUCHED, AS THEY ARE USED INTERNALLY BY SETUP TOOL.   ######## -->
+    <!-- #########      FOR OTHER VALUES, DO NOT CHANGE ANYTHING UNLESS YOU ARE SURE OF WHAT YOU ARE DOING.      ############ -->
+    <!-- ##############          YOU CAN ADD CUSTOM CONFIGURATION ABOVE AND BELOW THIS TEMPLATE.            ################# -->
+    <!-- #################################################################################################################### -->
+
+    <!-- ##################################################### -->
+    <!-- Configure Datasource for Bonita standard database -->
+    <!-- ##################################################### -->
+    <Resource name="RawBonitaDS"
+              auth="Container"
+              type="org.postgresql.xa.PGXADataSource"
+              class="org.postgresql.xa.PGXADataSource"
+              factory="org.postgresql.xa.PGXADataSourceFactory"
+              description="Raw Bonita Datasource"
+              closeMethod="close"
+              loginTimeout="0"
+              serverName="prod.postgres.iocom.com"
+              portNumber="5432"
+              port="5432"
+              databaseName="bonita"
+              user="administrator"
+              password="@iocom.a1b2c3.@iocom"
+              explicitUrl="true"
+              url="jdbc:postgresql://prod.postgres.iocom.com:5432/bonita" />
+
+    <Resource name="bonitaDS"
+              uniqueName="jdbc/bonitaDSXA"
+              auth="Container"
+              factory="org.jboss.narayana.tomcat.jta.TransactionalDataSourceFactory"
+              transactionManager="TransactionManager"
+              type="javax.sql.XADataSource"
+              initialSize="8"
+              maxTotal="50"
+              minIdle="8"
+              maxIdle="16"
+              defaultAutoCommit="false"
+              validationQuery="SELECT 1"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedOnMaintenance="true"
+              logAbandoned="true"
+              testOnBorrow="true"
+              xaDataSource="RawBonitaDS" />
+
+    <Resource name="bonitaSequenceManagerDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+              maxTotal="5"
+              minIdle="1"
+              maxIdle="5"
+              maxWaitMillis="10000"
+              initialSize="1"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedOnMaintenance="true"
+              logAbandoned="true"
+              testOnBorrow="true"
+              validationQuery="SELECT 1"
+              username="administrator"
+              password="@iocom.a1b2c3.@iocom"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://prod.postgres.iocom.com:5432/bonita" />
+
+    <!-- ##################################################### -->
+    <!-- Configure Business Data Datasource -->
+    <!-- ##################################################### -->
+    <Resource name="RawBusinessDataDS"
+              auth="Container"
+              type="org.postgresql.xa.PGXADataSource"
+              class="org.postgresql.xa.PGXADataSource"
+              factory="org.postgresql.xa.PGXADataSourceFactory"
+              description="Raw Bonita Business Data Datasource"
+              closeMethod="close"
+              loginTimeout="0"
+              serverName="prod.postgres.iocom.com"
+              portNumber="5432"
+              port="5432"
+              databaseName="businessdb"
+              user="businessuser"
+              password="businesspass"
+              explicitUrl="true"
+              url="jdbc:postgresql://prod.postgres.iocom.com:5432/businessdb" />
+
+    <Resource
+            name="BusinessDataDS"
+            uniqueName="jdbc/BusinessDataDSXA"
+            auth="Container"
+            factory="org.jboss.narayana.tomcat.jta.TransactionalDataSourceFactory"
+            transactionManager="TransactionManager"
+            type="javax.sql.XADataSource"
+            initialSize="4"
+            maxTotal="20"
+            minIdle="4"
+            maxIdle="10"
+            defaultAutoCommit="false"
+            removeAbandonedOnBorrow="true"
+            removeAbandonedOnMaintenance="true"
+            logAbandoned="true"
+            testOnBorrow="true"
+            validationQuery="SELECT 1"
+            xaDataSource="RawBusinessDataDS" />
+
+    <Resource name="NotManagedBizDataDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+              maxTotal="5"
+              minIdle="1"
+              maxIdle="5"
+              maxWaitMillis="10000"
+              initialSize="1"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedOnMaintenance="true"
+              logAbandoned="true"
+              testOnBorrow="true"
+              validationQuery="SELECT 1"
+              username="businessuser"
+              password="businesspass"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://prod.postgres.iocom.com:5432/businessdb" />
+
+    <!-- #################################################################################################################### -->
+    <!-- ########################         END OF TEMPLATE MODIFIED BY BONITA SETUP TOOL             ######################### -->
+    <!-- ###################            YOU CAN ADD CUSTOM CONFIGURATION *BELOW* THIS TEMPLATE              ################# -->
+    <!-- #################################################################################################################### -->
+
+</Context>
